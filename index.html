@@ -8,7 +8,18 @@
   </style>
 </head>
 <body>
-  <script src="routeparser.js" type="text/javascript"></script>
-  <script src="script.js" type="text/javascript"></script>
+    <div id="debug"></div>
+
+    <hr/>
+
+    <a href="http://localhost:8888/javascript/plugin/routeparser/user/alfred/de_musset" class="js--ajax">lien 1</a><br/>
+    <a href="http://localhost:8888/javascript/plugin/routeparser/user/maurice/dupond/index.html" class="js--ajax">lien 2</a><br/>
+    <a href="lien/relatif.html" class="js--ajax">lien 3 (relatif)</a><br/>
+    <a href="http://localhost:8888/javascript/plugin/routeparser/lien/relatif.html" class="js--ajax">lien 3-bis</a><br/>
+
+  <script type="text/javascript" src="linkconverter.js" ></script>
+  <script type="text/javascript" src="locationlistener.js" ></script>
+  <script type="text/javascript" src="routeparser.js" ></script>
+  <script type="text/javascript" src="script.js" ></script>
 </body>
 </html>

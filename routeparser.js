@@ -10,9 +10,7 @@
     // VERSION 0.1
     var RouteParser = ( function construct(){
 
-        var _aRoute = [];
-        var _sQuery = '';
-        var _fCallBackDefault;
+        var _aRoute = [], _sQuery = '', _fCallBackDefault, _oPublic;
 
         /**
          * [_addslashes description]
@@ -44,6 +42,7 @@
 
             oParamSend.getQuery = _getQuery;
             fCallBack.call( oParamSend);
+            return _oPublic;
         }
 
         /**
@@ -61,6 +60,7 @@
                 oRoute.param    = {};
 
             _aRoute.push( oRoute);
+            return _oPublic;
 
         }
 
@@ -101,6 +101,7 @@
          */
         function otherwise( fCallBack){
             _fCallBackDefault = fCallBack;
+            return _oPublic;
         }
 
         /**
@@ -111,7 +112,7 @@
         function run( sQuery){
 
             var aRoute = sQuery.split('/');
-            _sQuery    = sQuery
+            _sQuery    = sQuery;
 
             // find match
             for( var i = 0 ; i < _aRoute.length; i++){
@@ -139,11 +140,15 @@
         /**
          * RETURN PUBLIC
          */
-        return {
+
+        _oPublic = {
             add       : add,
             run       : run,
             otherwise : otherwise
         };
+
+
+        return _oPublic;
 
     })();
 
