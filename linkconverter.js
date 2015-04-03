@@ -1,6 +1,6 @@
 (function( _global){
 
-    var linkConverter = ( function _construct(){
+    var LinkConverter = ( function _construct(){
 
             var _oConfig = {
                 otherDomain : '',
@@ -106,6 +106,6 @@
 
         })();
 
-    _global.linkConverter = linkConverter;
+    _global.LinkConverter = LinkConverter;
 
 })( window);
