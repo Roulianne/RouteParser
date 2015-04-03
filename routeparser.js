@@ -10,17 +10,8 @@
     // VERSION 0.1
     var RouteParser = ( function construct(){
 
-        var _aRoute = [], _sQuery = '', _fCallBackDefault, _oPublic;
+        var _aRoute = [], _sQuery = '', _fCallBackDefault, _oPublic, _oParam;
 
-        /**
-         * [_addslashes description]
-         * @param  {[type]} str [description]
-         * @return {[type]}     [description]
-         */
-        function _addAntiSlashes( str) {
-          return (str + '')
-            .replace(/\//g, '\\/');
-        }
 
         /**
          * [_getQuery description]
@@ -37,42 +28,64 @@
          * @return {[type]}           [description]
          */
         function _execFunction( fCallBack, oParam){
-            var oParamSend      = oParam || {};
+            var oParamSend = oParam || {};
 
+            oParam = _mergeParam( oParamSend);
 
             oParamSend.getQuery = _getQuery;
             fCallBack.call( oParamSend);
+
             return _oPublic;
         }
 
         /**
-        * [add description]
-        * @param {[type]} sPattern  [description]
-        * @param {[type]} fCallBack [description]
-        */
-        function add( sPattern, fCallBack){
+         * [_treatParam description]
+         * @param  {[type]} sParam [description]
+         * @return {[type]}        [description]
+         */
+        function _treatParam( sParam){
+            var oParam = {};
+            var aParam = ( sParam.indexOf('&') > -1)? sParam.split('&') : [sParam];
 
-            var oRoute         = {};
+            for(var i = 0 ; i < aParam.length; i++){
+                var sKey = '' , sValue = '' ;
 
-                oRoute.callBack = fCallBack;
-                oRoute.pattern  = sPattern;
-                oRoute.route    = sPattern.split('/');
-                oRoute.param    = {};
+                if(  sParam.indexOf('=') > -1){
+                   var aSubParam = sParam.split('=');
+                   sKey   = aSubParam[0];
+                   sValue = aSubParam[1];
+                }else{
+                    sKey = sParam;
+                }
 
-            _aRoute.push( oRoute);
-            return _oPublic;
+                oParam[sKey] = sValue;
+            }
 
+            return oParam;
         }
 
         /**
-         * [_compare description]
+         * [_mergeParam description]
+         * @return {[type]} [description]
+         */
+        function _mergeParam( oParam){
+
+            for( sKey in _oParam){
+                oParam[sKey] = _oParam[sKey];
+            }
+
+            return oParam;
+        }
+
+        /**
+         * [_compareAndCompute description]
          * @param  {[type]} aRoute [description]
          * @param  {[type]} oRoute [description]
          * @return {[type]}        [description]
          */
-        function _compare( aRoute, oRoute){
+        function _compareAndCompute( aRoute, oRoute){
 
-            var oParam = oRoute.param;
+            var oParam = {};
 
             for( var y = 0 ; y < aRoute.length;y++){
 
@@ -91,8 +104,28 @@
             }
 
             _execFunction( oRoute.callBack, oParam);
+
             return true;
         }
+
+        /**
+        * [add description]
+        * @param {[type]} sPattern  [description]
+        * @param {[type]} fCallBack [description]
+        */
+        function add( sPattern, fCallBack){
+
+            var oRoute          = {};
+
+                oRoute.callBack = fCallBack;
+                oRoute.pattern  = sPattern;
+                oRoute.route    = sPattern.split('/');
+
+            _aRoute.push( oRoute);
+            return _oPublic;
+
+        }
+
 
         /**
          * [default description]
@@ -110,17 +143,29 @@
         * @return {[type]}        [description]
         */
         function run( sQuery){
+            var sParam = '';
+             _oParam = {};
+
+            if( sQuery.indexOf('?') > -1){
+
+                var aQuery = sQuery.split('?');
+                sQuery     = aQuery[0];
+                sParam     = aQuery[1];
+                _oParam    = _treatParam( sParam);
+
+            }
+
 
             var aRoute = sQuery.split('/');
             _sQuery    = sQuery;
 
             // find match
             for( var i = 0 ; i < _aRoute.length; i++){
-                var oRoute = _aRoute[i];
+                var oRoute   = _aRoute[i];
 
                 if( aRoute.length == oRoute.route.length){
 
-                    if( _compare( aRoute, oRoute)){
+                    if( _compareAndCompute( aRoute, oRoute)){
                         return true;
                     }
                 }

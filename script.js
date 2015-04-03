@@ -11,7 +11,7 @@ function debug( sMsg){
     oElement.innerHTML += '- ' + sMsg + '<br/>';
 }
 
-// fonction lancer a chaque changement de hash
+// fonction lancer à chaque changement de hash
 function eventListener( sHash){
 
     RouteParser.run( sHash);
@@ -24,26 +24,26 @@ function eventListener( sHash){
  ****************************************************/
 
 RouteParser.add( 'user/maurice/dupond/:file', function(){
+                console.log( this);
+                debug( 'controler -> 1 : ficher de nom '+this.file);
 
-    debug( 'controler -> 1 : ficher de nom '+this.file);
+         }).add( 'user/:prenom/:nom', function(){
 
-}).add( 'user/:prenom/:nom', function(){
+                debug( 'controler -> 2 : nom = '+this.nom+' & prenom = '+this.prenom);
 
-    debug( 'controler -> 2 : nom = '+this.nom+' & prenom = '+this.prenom);
+         }).add( 'lien/:type', function(){
 
-}).add( 'lien/:type', function(){
+                debug( 'controler -> 3 : (on parle de lien là, non?) '+this.type);
 
-    debug( 'controler -> 3 : (on parle de lien là, non?) '+this.type);
+         }).add( '', function(){
 
-}).add( '', function(){
+                debug( 'controler vide');
 
-    debug( 'controler vide');
+         }).otherwise(function(){
 
-}).otherwise(function(){
+                debug( 'controler default : ' + this.getQuery());
 
-    debug( 'controler default : ' + this.getQuery());
-
-});
+         });
 
 /*****************************************************
  * INITIALISATION
@@ -51,15 +51,19 @@ RouteParser.add( 'user/maurice/dupond/:file', function(){
 
 //configuration du module "LocationListerner" (qui gere le changement d'url)
 LocationListener.setConfig({
+
                     separateur : '#',
                     listener   : eventListener
+
                 }).launch();
 
 //configuration du module "LinkConverter" (qui change les liens en ancre)
 LinkConverter.setConfig({
+
                 separateur : '#',
                 rootDomain : 'javascript/plugin/routeparser/',
                 element    : document.querySelectorAll("a.js--ajax")
+
             }).launch();
 
 
