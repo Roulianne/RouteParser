@@ -4,14 +4,14 @@
  * VARIABLE FUNCTION
  ****************************************************/
 
-// juste fucntion d'affichage
+// juste fonction d'affichage
 function debug( sMsg){
 
     var oElement       = document.getElementById("debug");
     oElement.innerHTML += '- ' + sMsg + '<br/>';
 }
 
-// function lancer a chaque changemet de hash
+// fonction lancer a chaque changement de hash
 function eventListener( sHash){
 
     RouteParser.run( sHash);
@@ -49,13 +49,13 @@ RouteParser.add( 'user/maurice/dupond/:file', function(){
  * INITIALISATION
  ****************************************************/
 
-//configuration du module LocationListerner (qui gere le changement d'url)
+//configuration du module "LocationListerner" (qui gere le changement d'url)
 LocationListener.setConfig({
                     separateur : '#',
                     listener   : eventListener
                 }).launch();
 
-//configuration du module LinkConverter (qui change les lien en ancre)
+//configuration du module "LinkConverter" (qui change les liens en ancre)
 LinkConverter.setConfig({
                 separateur : '#',
                 rootDomain : 'javascript/plugin/routeparser/',
