@@ -30,9 +30,14 @@
         function _execFunction( fCallBack, oParam){
             var oParamSend = oParam || {};
 
-            oParam = _mergeParam( oParamSend);
-
             oParamSend.getQuery = _getQuery;
+
+            oParamSend.getParam = ( function buildGet( oParam){
+                return function getParam(){
+                    return oParam;
+                }
+            })( _oParam);
+
             fCallBack.call( oParamSend);
 
             return _oPublic;
@@ -59,19 +64,6 @@
                 }
 
                 oParam[sKey] = sValue;
-            }
-
-            return oParam;
-        }
-
-        /**
-         * [_mergeParam description]
-         * @return {[type]} [description]
-         */
-        function _mergeParam( oParam){
-
-            for( sKey in _oParam){
-                oParam[sKey] = _oParam[sKey];
             }
 
             return oParam;

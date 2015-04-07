@@ -24,7 +24,7 @@ function eventListener( sHash){
  ****************************************************/
 
 RouteParser.add( 'user/maurice/dupond/:file', function(){
-                console.log( this);
+                console.log( this.getParam());
                 debug( 'controler -> 1 : ficher de nom '+this.file);
 
          }).add( 'user/:prenom/:nom', function(){
